@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import SideMenu from "../../components/sandbox/SideMenu";
 import TopHeader from "../../components/sandbox/TopHeader";
 import Books from "../../views/sandbox/books/Books";
@@ -21,7 +21,7 @@ export default function NewsSandBox() {
           <div
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}>
-            Content
+            {/* Content */}
             <Routes>
               <Route path="/" element={<Books />} />
               <Route path="/books" element={<Books />} />

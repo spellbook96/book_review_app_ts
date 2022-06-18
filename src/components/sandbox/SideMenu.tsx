@@ -19,7 +19,7 @@ export default function SideMenu(props: any) {
     items.push({ label: "My Reviews", key: "/my" });
     items.push({ label: "New Review", key: "/new" });
     return (
-      <Menu theme="dark" mode="inline" className="aaaaaaa" defaultSelectedKeys={['1']} onClick={(menuinfo)=>{
+      <Menu theme="dark" mode="inline" className='123' defaultSelectedKeys={['1']} onClick={(menuinfo)=>{
         navigate(menuinfo.key);
       }} items={items} />
     );
