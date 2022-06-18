@@ -1,8 +1,8 @@
-interface IAction {
+interface ILoadingAction {
   type: string;
   isLoading?: boolean;
 }
-export const LoadingReducer = (preState = {isLoading : true}, action:IAction) => {
+export const LoadingReducer = (preState = {isLoading : true}, action:ILoadingAction) => {
   switch (action.type) {
     case "SET_LOADING":
       const newState = { ...preState };

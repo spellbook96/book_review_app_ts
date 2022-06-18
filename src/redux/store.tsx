@@ -5,7 +5,7 @@ import { configureStore } from '@reduxjs/toolkit'
 
 const reducer = combineReducers({
   LoginReducer,
-  LoadingReducer,
+  // LoadingReducer,
 })
 
 // const store = configureStore({reducer:{

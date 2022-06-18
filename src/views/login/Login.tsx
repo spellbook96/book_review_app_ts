@@ -11,6 +11,9 @@ import {
 } from "formik-antd";
 import { message, Button, Row, Col } from "antd";
 import "./Login.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import store from "../../redux/store";
 // interface IErr {
 //   [key: string]: string;
 // }
@@ -29,6 +32,32 @@ function validateRequired(value: string) {
   return value ? undefined : "required";
 }
 
+interface ILogin {
+  email: string;
+  password: string;
+}
+const setUserName = (email: string, password: string) => {
+  return axios({
+    method: "get",
+    url: "https://api-for-missions-and-railways.herokuapp.com/users",
+    headers: { Authorization: "Bearer " + localStorage.getItem("token") },
+  })
+    .catch((err) => {
+      message.error("Try again later");
+    })
+    .then((res: any) => {
+      console.log(res);
+      localStorage.setItem("userName", res.data.name);
+      store.dispatch({
+        type: "SET_LOGIN",
+        isLogin: true,
+        userName: res.data.name,
+        email: email,
+        password: password,
+      });
+    });
+};
+
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 16 },
@@ -38,6 +67,53 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 export const Login: React.FC = () => {
+  let navigate = useNavigate();
+  React.useEffect(() => {
+    if (
+      store.getState().LoginReducer.isLogin ||
+      localStorage.getItem("token")
+    ) {
+      navigate("/");
+    }
+  }, [store.getState().LoginReducer.isLogin]);
+
+  const doLogin = (values: ILogin) => {
+    axios({
+      method: "post",
+      url: "https://api-for-missions-and-railways.herokuapp.com/signin",
+      data: {
+        email: values.email,
+        password: values.password,
+      },
+    })
+      .catch((err) => {
+        console.log(err);
+        switch (err.response.status) {
+          case 403:
+            message.error("Invalid email or password");
+            break;
+          case 404:
+            message.error("Server connection failure");
+            break;
+          case 500:
+            message.error("Error occurred at server.");
+            break;
+          default:
+            message.error("Unknown error occurred.");
+            break;
+        }
+      })
+      .then((res: any) => {
+        console.log(res.data);
+        if (res.status === 200) {
+          localStorage.setItem("token", res.data.token);
+          setUserName(values.email, values.password).then(() => {
+            message.success("Login successful, redirecting...");
+            navigate("/");
+          });
+        }
+      });
+  };
   return (
     <div
       style={{
@@ -58,10 +134,11 @@ export const Login: React.FC = () => {
               remember: false,
             }}
             onSubmit={(values, actions) => {
-              message.success(JSON.stringify(values, null, 3));
-
+              // message.success(JSON.stringify(values, null, 3));
+              doLogin(values);
               console.log(values);
               actions.setSubmitting(false);
+              navigate("/login");
               // actions.resetForm()
             }}
             validate={(values) => {
@@ -119,7 +196,7 @@ export const Login: React.FC = () => {
                   <Form.Item name="tailButton" {...tailLayout}>
                     <ResetButton>Reset</ResetButton>
                     <SubmitButton>Login</SubmitButton>
-                    <Button type="link" htmlType="button" href="/signup" >
+                    <Button type="link" htmlType="button" href="/signup">
                       Sign Up
                     </Button>
                   </Form.Item>

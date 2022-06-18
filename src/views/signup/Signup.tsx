@@ -8,8 +8,11 @@ import {
   Form,
   FormItem,
 } from "formik-antd";
-import { message, Button,} from "antd";
+import { message, Button } from "antd";
 import "./Signup.css";
+import axios from "axios";
+import store from "../../redux/store";
+import { useNavigate } from "react-router-dom";
 // interface IErr {
 //   [key: string]: string;
 // }
@@ -37,6 +40,31 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 export const Signup: React.FC = () => {
+  let navigate = useNavigate();
+  const doSignup = (values: any) => {
+    return axios({
+      method: "post",
+      url: "https://api-for-missions-and-railways.herokuapp.com/users",
+      data: {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      },
+    })
+      .catch((err) => {
+        message.error("ERROR");
+      })
+      .then((res: any) => {
+        console.log(res);
+        console.log(res.data.token)
+        message.success("Success");
+        store.dispatch({ type: "SET_LOGIN", isLogin: true });
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userName", values.name);
+        localStorage.setItem("email", values.email);
+        localStorage.setItem("password", values.password);
+      });
+  };
   return (
     <div
       style={{
@@ -52,15 +80,19 @@ export const Signup: React.FC = () => {
           }}>
           <Formik
             initialValues={{
+              name: "",
               email: "",
               password: "",
               passwordConfirm: "",
             }}
             onSubmit={(values, actions) => {
-              message.success(JSON.stringify(values, null, 3));
+              doSignup(values).then(() => {
+                // message.success(JSON.stringify(values, null, 3));
 
-              console.log(values);
-              actions.setSubmitting(false);
+                // console.log(values);
+                actions.setSubmitting(false);
+                navigate("/login");
+              });
               // actions.resetForm()
             }}
             validate={(values) => {
@@ -95,8 +127,15 @@ export const Signup: React.FC = () => {
                 // wrapperCol={{ xs: 20 }}
                 {...layout}>
                 <div style={{ flex: 1 }} />
-                  {/* <FormikDebug /> */}
+                {/* <FormikDebug /> */}
                 <div style={{ background: "white", flex: 1, padding: 40 }}>
+                  <FormItem
+                    name="name"
+                    label="Name"
+                    required={true}
+                    validate={validateRequired}>
+                    <Input name="name" placeholder="Name" />
+                  </FormItem>
                   <FormItem
                     name="email"
                     label="Email"
