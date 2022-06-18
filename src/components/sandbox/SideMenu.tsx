@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout, Menu } from "antd";
 import './index.css'
+import { useNavigate } from "react-router-dom";
 const { Sider } = Layout;
 
 // const menuList = [
@@ -12,14 +13,14 @@ const { Sider } = Layout;
 
 // const { SubMenu } = Menu;
 export default function SideMenu(props: any) {
+  let navigate = useNavigate();
   const renderMenu = () => {
-    const items = [{ label: "All Reviews", path: "/books", key: "all" }];
-    items.push({ label: "My Reviews", path: "/my", key: "my" });
-    items.push({ label: "New Review", path: "/new", key: "new" });
+    const items = [{ label: "All Reviews",  key: "/books" }];
+    items.push({ label: "My Reviews", key: "/my" });
+    items.push({ label: "New Review", key: "/new" });
     return (
-      <Menu theme="dark" mode="inline" className="aaaaaaa" defaultSelectedKeys={['1']} onClick={()=>{
-        console.log(props)
-        console.log(props.history)
+      <Menu theme="dark" mode="inline" className="aaaaaaa" defaultSelectedKeys={['1']} onClick={(menuinfo)=>{
+        navigate(menuinfo.key);
       }} items={items} />
     );
   };

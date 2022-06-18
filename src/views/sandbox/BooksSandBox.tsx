@@ -5,6 +5,7 @@ import SideMenu from "../../components/sandbox/SideMenu";
 import TopHeader from "../../components/sandbox/TopHeader";
 import Books from "../../views/sandbox/books/Books";
 import "./BooksSandBox.css";
+import MyReviews from "./my-reviews/MyReviews";
 const { Content } = Layout;
 export default function NewsSandBox() {
   return (
@@ -22,7 +23,17 @@ export default function NewsSandBox() {
             style={{ padding: 24, minHeight: 360 }}>
             Content
             <Routes>
+              <Route path="/" element={<Books />} />
               <Route path="/books" element={<Books />} />
+              <Route path="/my" element={<MyReviews />} />
+              <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </main>
+                }
+              />
             </Routes>
           </div>
         </Content>

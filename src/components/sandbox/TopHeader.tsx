@@ -19,7 +19,7 @@ export default function TopHeader() {
       collapsed ? <MenuUnfoldOutlined className="trigger" onClick={() => setCollapsed(!collapsed)} /> : <MenuFoldOutlined className="trigger" onClick={() => setCollapsed(!collapsed)} />
     }
     <div style={{float:"right"}}>
-      <span>Welcome back userID!</span>
+      <span>userID</span>
       <Dropdown overlay={menu}>
       <Avatar size={48} icon={<UserOutlined />} />
       </Dropdown>

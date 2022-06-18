@@ -1,45 +1,56 @@
 import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
-import React from 'react';
-import './css/books.css';
+import { Card, Layout, Menu } from 'antd';
+import React, { useEffect } from 'react';
+import './css/Books.css';
+import axios from 'axios';
 const { Header, Content, Footer, Sider } = Layout;
 
-const Books: React.FC = () => (
-  <Layout>
-    <Sider
-      breakpoint="lg"
-      collapsedWidth="0"
-      onBreakpoint={broken => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }}
-    >
-      <div className="logo">logo</ div>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={['4']}
-        items={[UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-          (icon, index) => ({
-            key: String(index + 1),
-            icon: React.createElement(icon),
-            label: `nav ${index + 1}`,
-          }),
-        )}
-      />
-    </Sider>
-    <Layout>
-      <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
-      <Content style={{ margin: '24px 16px 0' }}>
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-          content
-        </div>
-      </Content>
-      <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
-    </Layout>
-  </Layout>
-);
+interface IReview{
 
-export default Books;
+  id:number;
+  title:string,
+  review:string,
+  reviewer:string,
+  url:string,
+  details:string;
+}
+
+export default function Books() {
+  const [allReviewsList, setAllReviewsList] = React.useState<IReview[]>([]);
+  
+  useEffect (()=>{
+    axios({url:"https://api-for-missions-and-railways.herokuapp.com/public/books",headers:{}}).then(
+      (res)=>{
+        // console.log(res.data);
+        setAllReviewsList(res.data);
+      }
+    )
+  } ,[])
+
+  const detailURL = (id:number)=>{
+    let str:string = '/detail/'+id;
+    return <a href={str}></a>
+  }
+  const renderReviews = (data:IReview[]) => {
+    return data.map((item:IReview, index:number) => {
+      return (
+        // <div className="review-item" key={index}>
+        //   <div className="review-item-title">{item.title}</div>
+        //   <div className="review-item-review">{item.review}</div>
+        //   <div className="review-item-reviewer">{item.reviewer}</div>
+        //   <div className="review-item-url">{item.url}</div>
+        //   <div className="review-item-details">{item.details}</div>
+        // </div>
+        <Card title={item.title} extra={<a href={'/detail/'+item.id}>More</a>} style={{ width: 300,maxHeight: 300 }}>
+        <p key={item.id}>{item.review}</p>
+      </Card>
+      );
+    }
+    );
+  }
+  return (
+    <div>Content-books
+      {renderReviews(allReviewsList)}
+    </div>
+  )
+}
