@@ -27,9 +27,10 @@ import { useNavigate } from "react-router-dom";
 
 //   return errors;
 // }
-function validateRequired(value: string) {
-  return value ? undefined : "required";
-}
+
+// function validateRequired(value: string) {
+//   return value ? undefined : "required1";
+// }
 
 const layout = {
   labelCol: { span: 6 },
@@ -56,7 +57,7 @@ export const Signup: React.FC = () => {
       })
       .then((res: any) => {
         console.log(res);
-        console.log(res.data.token)
+        console.log(res.data.token);
         message.success("Success");
         store.dispatch({ type: "SET_LOGIN", isLogin: true });
         localStorage.setItem("token", res.data.token);
@@ -97,6 +98,9 @@ export const Signup: React.FC = () => {
             }}
             validate={(values) => {
               const errors: any = {};
+              if (!values.name) {
+                errors.name = "Required";
+              }
               if (!values.email) {
                 errors.email = "Required";
               } else if (
@@ -105,7 +109,7 @@ export const Signup: React.FC = () => {
                 errors.email = "Invalid email address";
               }
               if (!values.passwordConfirm) {
-                errors.passwordConfirm = "required";
+                errors.passwordConfirm = "Required";
               } else if (values.password !== values.passwordConfirm) {
                 errors.passwordConfirm = "passwords must match";
               }
@@ -119,67 +123,53 @@ export const Signup: React.FC = () => {
             //   }
             //   return {}
             // }}
-            render={() => (
-              <Form
-                name="basic"
-                style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
-                // labelCol={{ xs: 12 }}
-                // wrapperCol={{ xs: 20 }}
-                {...layout}>
-                <div style={{ flex: 1 }} />
-                {/* <FormikDebug /> */}
-                <div style={{ background: "white", flex: 1, padding: 40 }}>
-                  <FormItem
-                    name="name"
-                    label="Name"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input name="name" placeholder="Name" />
-                  </FormItem>
-                  <FormItem
-                    name="email"
-                    label="Email"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input name="email" placeholder="Email" />
-                  </FormItem>
-                  <FormItem
-                    name="password"
-                    label="Password"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input.Password name="password" placeholder="Password" />
-                  </FormItem>
-                  <FormItem
+          >
+            <Form
+              name="basic"
+              style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
+              // labelCol={{ xs: 12 }}
+              // wrapperCol={{ xs: 20 }}
+              {...layout}>
+              <div style={{ flex: 1 }} />
+              {/* <FormikDebug /> */}
+              <div style={{ background: "white", flex: 1, padding: 40 }}>
+                <FormItem name="name" label="Name" required={true}>
+                  <Input name="name" placeholder="Name" />
+                </FormItem>
+                <FormItem name="email" label="Email" required={true}>
+                  <Input name="email" placeholder="Email" />
+                </FormItem>
+                <FormItem name="password" label="Password" required={true}>
+                  <Input.Password name="password" placeholder="Password" />
+                </FormItem>
+                <FormItem
+                  name="passwordConfirm"
+                  label="Confirm"
+                  required={true}>
+                  <Input.Password
                     name="passwordConfirm"
-                    label="Confirm"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input.Password
-                      name="passwordConfirm"
-                      placeholder="PasswordConfirm"
-                    />
-                  </FormItem>
-                  {/* <Row style={{ marginTop: 60 }}>
+                    placeholder="PasswordConfirm"
+                  />
+                </FormItem>
+                {/* <Row style={{ marginTop: 60 }}>
                     <Col offset={8}> */}
-                  {/* <Button.Group> */}
-                  <Form.Item name="tailButton" {...tailLayout}>
-                    <ResetButton>Reset</ResetButton>
-                    <SubmitButton>Submit</SubmitButton>
-                    <Button type="link" htmlType="button" href="/login">
-                      Login
-                    </Button>
-                  </Form.Item>
-                  {/* </Button.Group> */}
-                  {/* </Col>
+                {/* <Button.Group> */}
+                <Form.Item name="tailButton" {...tailLayout}>
+                  <ResetButton>Reset</ResetButton>
+                  <SubmitButton>Submit</SubmitButton>
+                  <Button type="link" htmlType="button" href="/login">
+                    Login
+                  </Button>
+                </Form.Item>
+                {/* </Button.Group> */}
+                {/* </Col>
                   </Row> */}
-                </div>
-                <pre style={{ flex: 1 }}>
-                  <span></span>
-                </pre>
-              </Form>
-            )}
-          />
+              </div>
+              <pre style={{ flex: 1 }}>
+                <span></span>
+              </pre>
+            </Form>
+          </Formik>
         </div>
       </div>
     </div>

@@ -28,9 +28,10 @@ import store from "../../redux/store";
 
 //   return errors;
 // }
-function validateRequired(value: string) {
-  return value ? undefined : "required";
-}
+
+// function validateRequired(value: string) {
+//   return value ? undefined : "required";
+// }
 
 interface ILogin {
   email: string;
@@ -148,6 +149,9 @@ export const Login: React.FC = () => {
               ) {
                 errors.email = "Invalid email address";
               }
+              if (!values.password) {
+                errors.password = "Required";
+              }
               return errors;
             }}
             // isValidating={true}
@@ -157,58 +161,60 @@ export const Login: React.FC = () => {
             //   }
             //   return {}
             // }}
-            render={() => (
-              <Form
-                name="basic"
-                style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
-                // labelCol={{ xs: 12 }}
-                // wrapperCol={{ xs: 20 }}
-                {...layout}>
-                <div style={{ flex: 1 }} />
-                <div style={{ background: "white", flex: 1, padding: 40 }}>
-                  <FormItem
-                    name="email"
-                    label="Email"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input name="email" placeholder="Email" />
-                  </FormItem>
-                  <FormItem
-                    name="password"
-                    label="Password"
-                    required={true}
-                    validate={validateRequired}>
-                    <Input.Password name="password" placeholder="Password" />
-                  </FormItem>
-                  <FormItem
-                    name="remember"
-                    valuePropName="checked"
-                    labelCol={{ xs: 4 }}
-                    wrapperCol={{ offset: 8, span: 16 }}>
-                    <Checkbox name="remember">remember</Checkbox>
-                  </FormItem>
+          >
+            {() => (
 
-                  {/* <Row style={{ marginTop: 60 }}>
-                    <Col offset={8}> */}
-                  {/* <Button.Group> */}
-                  <Form.Item name="tailButton" {...tailLayout}>
-                    <ResetButton>Reset</ResetButton>
-                    <SubmitButton>Login</SubmitButton>
-                    <Button type="link" htmlType="button" href="/signup">
-                      Sign Up
-                    </Button>
-                  </Form.Item>
-                  {/* </Button.Group> */}
-                  {/* </Col>
-                  </Row> */}
-                </div>
-                <pre style={{ flex: 1 }}>
-                  {/* <FormikDebug /> */}
-                  <span></span>
-                </pre>
-              </Form>
+              <Form
+              name="basic"
+              style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
+              // labelCol={{ xs: 12 }}
+              // wrapperCol={{ xs: 20 }}
+              {...layout}>
+              <div style={{ flex: 1 }} />
+              <div style={{ background: "white", flex: 1, padding: 40 }}>
+                <FormItem
+                  name="email"
+                  label="Email"
+                  required={true}
+>
+                  <Input name="email" placeholder="Email" />
+                </FormItem>
+                <FormItem
+                  name="password"
+                  label="Password"
+                  required={true}
+>
+                  <Input.Password name="password" placeholder="Password" />
+                </FormItem>
+                <FormItem
+                  name="remember"
+                  valuePropName="checked"
+                  labelCol={{ xs: 4 }}
+                  wrapperCol={{ offset: 8, span: 16 }}>
+                  <Checkbox name="remember">remember</Checkbox>
+                </FormItem>
+
+                {/* <Row style={{ marginTop: 60 }}>
+                  <Col offset={8}> */}
+                {/* <Button.Group> */}
+                <Form.Item name="tailButton" {...tailLayout}>
+                  <ResetButton>Reset</ResetButton>
+                  <SubmitButton>Login</SubmitButton>
+                  <Button type="link" htmlType="button" href="/signup">
+                    Sign Up
+                  </Button>
+                </Form.Item>
+                {/* </Button.Group> */}
+                {/* </Col>
+                </Row> */}
+              </div>
+              <pre style={{ flex: 1 }}>
+                {/* <FormikDebug /> */}
+                <span></span>
+              </pre>
+            </Form>
             )}
-          />
+          </Formik>
         </div>
       </div>
     </div>
