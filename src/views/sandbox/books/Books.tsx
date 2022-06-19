@@ -50,11 +50,11 @@ export default function Books() {
         // isLoading
         ///
 
-        <Col span={8}>
+        <Col span={8} key={index+data.length}>
           <Card
             title={"『" + item.title + "』"}
             extra={<a href={"/detail/" + item.id}>More</a>}
-            style={{ width: 300, height: 120, margin: 16 }}>
+            style={{ width: 300, height: 120, margin: 16 }} key={index+data.length*2}>
             <p className="review-text" key={item.id}>
               {item.review}
             </p>
@@ -79,7 +79,7 @@ export default function Books() {
   return (
     <div>
       {/* Content-books */}
-      <Row gutter={16}>
+      <Row gutter={16} key={1}>
         {isLoading ? makeLoadinglist(10) :  renderReviews(allReviewsList) }
         {/* <Row gutter={16}>{renderReviews(allReviewsList)}</Row> */}
       </Row>

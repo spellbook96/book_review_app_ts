@@ -7,13 +7,14 @@ import { Link, useNavigate } from "react-router-dom";
 import store from "../../redux/store";
 const { Header, Sider, Content } = Layout;
 export default function TopHeader() {
+  const  navigate = useNavigate();
   // console.log("init TopHeader");
   const [collapsed, setCollapsed] = useState(false);
   const [isLogin, setIsLogin] = useState(localStorage.getItem("token") ? true : false);
   const menu = (
     <Menu
       items={[
-        { label: "11111", key: "1" },
+        { label: "Profile", key: "1", onClick: () => navigate("/profile") },
         {
           label: "Logout",
           key: "2",
@@ -26,7 +27,6 @@ export default function TopHeader() {
         },
       ]}></Menu>
   );
-  let navigate = useNavigate();
   // useEffect(() => {
   //   if (localStorage.getItem("token") === null) {
   //     navigate("/");

@@ -48,6 +48,8 @@ const setUserName = (email: string, password: string) => {
     .then((res: any) => {
       console.log(res);
       localStorage.setItem("userName", res.data.name);
+      localStorage.setItem("email", email);
+      localStorage.setItem("password", password);
       store.dispatch({
         type: "SET_LOGIN",
         isLogin: true,
@@ -68,14 +70,10 @@ const tailLayout = {
 };
 export const Login: React.FC = () => {
   let navigate = useNavigate();
-  React.useEffect(() => {
-    if (
-      store.getState().LoginReducer.isLogin ||
-      localStorage.getItem("token")
-    ) {
-      navigate("/");
-    }
-  }, [store.getState().LoginReducer.isLogin]);
+  console.log("checking login");
+  if (store.getState().LoginReducer.isLogin || localStorage.getItem("token")) {
+    navigate("/");
+  }
 
   const doLogin = (values: ILogin) => {
     axios({
@@ -99,7 +97,7 @@ export const Login: React.FC = () => {
             message.error("Error occurred at server.");
             break;
           default:
-            message.error("Unknown error occurred.");
+            message.error("Cannot connect database server.");
             break;
         }
       })
