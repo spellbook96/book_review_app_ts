@@ -30,7 +30,7 @@ export default function Books() {
       // console.log(res.data);
       setAllReviewsList(res.data);
       setIsLoading(false);
-      message.success("Loaded");
+      message.success("Loaded: All Reviews");
       return "OK";
     })
     .catch((err) => {
