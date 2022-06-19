@@ -6,6 +6,7 @@ import TopHeader from "../../components/sandbox/TopHeader";
 import Books from "../../views/sandbox/books/Books";
 import "./BooksSandBox.css";
 import MyReviews from "./my-reviews/MyReviews";
+import ReviewDetail from "./review-detail/ReviewDetail";
 const { Content } = Layout;
 export default function NewsSandBox() {
   return (
@@ -26,6 +27,7 @@ export default function NewsSandBox() {
               <Route path="/" element={<Books />} />
               <Route path="/books" element={<Books />} />
               <Route path="/my" element={<MyReviews />} />
+              <Route path="/detail" element={<ReviewDetail />} />
               <Route
                 path="*"
                 element={

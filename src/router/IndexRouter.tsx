@@ -11,16 +11,9 @@ export default function IndexRouter() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/books"  element={localStorage.getItem('token') ? <Books/> :<Books/>} /> */}
-        <Route path="*" element={<BooksSandBox />} />
-        {/* <Route
-          path="*"
-          element={
-            <main style={{ padding: "1rem" }}>
-              <p>There's nothing here!</p>
-            </main>
-          }
-        /> */}
+        <Route path="*" element={<BooksSandBox />}>
+
+        </Route>
       </Routes>
     </BrowserRouter>
   );

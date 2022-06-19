@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import store from "../../redux/store";
 const { Header, Sider, Content } = Layout;
 export default function TopHeader() {
+  // console.log("init TopHeader");
   const [collapsed, setCollapsed] = useState(false);
   const [isLogin, setIsLogin] = useState(localStorage.getItem("token") ? true : false);
   const menu = (
@@ -18,6 +19,7 @@ export default function TopHeader() {
           key: "2",
           danger: true,
           onClick: () => {
+            console.log("logout");
             localStorage.clear();
             store.dispatch({type:'SET_LOGIN',isLogin:false});
           },
@@ -34,17 +36,15 @@ export default function TopHeader() {
   //   }
   // }, [localStorage.getItem("token")]);
   store.subscribe(() => {
-    console.log("通知中");
-    console.log(store.getState().LoginReducer.isLogin);
+    // console.log("通知中");
     if (store.getState().LoginReducer.isLogin) {
       setIsLogin(true);
     } else{
       setIsLogin(false);
     }
   });
-  console.log(localStorage.getItem("token"));
-  console.log(isLogin);
   return (
+    // console.log("render TopHeader"),
     <Header className="site-layout-background" style={{ padding: "0 20px" }}>
       {collapsed ? (
         <MenuUnfoldOutlined

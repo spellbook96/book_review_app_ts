@@ -21,7 +21,7 @@ interface IReview {
 
 export default function Books() {
   const [allReviewsList, setAllReviewsList] = React.useState<IReview[]>([]);
-
+  const [isLoading, setIsLoading] = React.useState(true);
   useEffect(() => {
     axios({
       url: "https://api-for-missions-and-railways.herokuapp.com/public/books",
@@ -29,6 +29,7 @@ export default function Books() {
     }).then((res) => {
       // console.log(res.data);
       setAllReviewsList(res.data);
+      setIsLoading(false);
     });
   }, []);
 
@@ -46,21 +47,42 @@ export default function Books() {
         //   <div className="review-item-url">{item.url}</div>
         //   <div className="review-item-details">{item.details}</div>
         // </div>
+        // isLoading
+        ///
+
         <Col span={8}>
           <Card
-            title={'『'+item.title+'』'}
+            title={"『" + item.title + "』"}
             extra={<a href={"/detail/" + item.id}>More</a>}
-            style={{ width: 300, height: 120, }}>
-            <p key={item.id} style={{textOverflow:'ellipsis',overflow:'hidden',whiteSpace:'nowrap'}}>{item.review}</p>
+            style={{ width: 300, height: 120, margin: 16 }}>
+            <p className="review-text" key={item.id}>
+              {item.review}
+            </p>
           </Card>
         </Col>
       );
     });
   };
+  const makeLoadinglist = (n: number) => {
+    let arr: any[] = [];
+    for (let i = 0; i < n; i++) {
+      arr.push(
+        <Col span={8}>
+          <Card
+            loading={true}
+            style={{ width: 300, height: 120, margin: 16 }}></Card>
+        </Col>
+      );
+    }
+    return arr;
+  };
   return (
     <div>
       {/* Content-books */}
-      <Row gutter={16}>{renderReviews(allReviewsList)}</Row>
+      <Row gutter={16}>
+        {isLoading ? makeLoadinglist(10) :  renderReviews(allReviewsList) }
+        {/* <Row gutter={16}>{renderReviews(allReviewsList)}</Row> */}
+      </Row>
     </div>
   );
 }
