@@ -3,7 +3,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Card, Col, Layout, Menu, Row } from "antd";
+import { Card, Col, Layout, Menu, message, Row } from "antd";
 import React, { useEffect } from "react";
 import "./css/Books.css";
 import axios from "axios";
@@ -30,7 +30,14 @@ export default function Books() {
       // console.log(res.data);
       setAllReviewsList(res.data);
       setIsLoading(false);
-    });
+      message.success("Loaded");
+      return "OK";
+    })
+    .catch((err) => {
+      message.error("Cannot connect to server");
+      return "ERROR";
+    }
+    );
   }, []);
 
   const detailURL = (id: number) => {
@@ -49,7 +56,7 @@ export default function Books() {
         // </div>
         // isLoading
         ///
-
+        index % 10 !== 0 ? (
         <Col span={8} key={index+data.length}>
           <Card
             title={"『" + item.title + "』"}
@@ -60,6 +67,7 @@ export default function Books() {
             </p>
           </Card>
         </Col>
+        ) : undefined
       );
     });
   };
@@ -80,7 +88,7 @@ export default function Books() {
     <div>
       {/* Content-books */}
       <Row gutter={16} key={1}>
-        {isLoading ? makeLoadinglist(10) :  renderReviews(allReviewsList) }
+        {isLoading ? makeLoadinglist(9) :  renderReviews(allReviewsList) }
         {/* <Row gutter={16}>{renderReviews(allReviewsList)}</Row> */}
       </Row>
     </div>

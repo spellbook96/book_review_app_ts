@@ -60,15 +60,16 @@ function postReview(values: {
 }): any {
   axios({
     method: "post",
-    url: "https://api-for-missions-and-railways.herokuapp.com/new",
+    url: "https://api-for-missions-and-railways.herokuapp.com/books",
     data: {
-      title: values.title,
-      url: values.url,
-      detail: values.detail,
-      review: values.review,
+      "title": values.title,
+      "url": values.url,
+      "detail": values.detail,
+      "review": values.review,
     },
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json",
     },
   })
     .catch((err: { response: { status: any } }) => {
@@ -77,8 +78,7 @@ function postReview(values: {
           message.error("You are not authorized use");
           break;
         case 400:
-          message.error("validation error");
-          message.error("ERROR");
+          message.error("Validation error");
           break;
         case 500:
           message.error("Error occurred at server.");
@@ -104,6 +104,8 @@ function handleValidate(values: {
   let errors: any = {};
   if (!values.title) errors.title = "Title is required";
   if (!values.review) errors.review = "Review is required";
+  if (!values.url) errors.url = "URL is required";
+  if (!values.detail) errors.detail = "Detail is required";
   return errors;
 }
 const tailLayout = {
@@ -127,11 +129,11 @@ function myRender(
           <Input name="title" allowClear={true} />
           <span />
         </Form.Item>
-        <Form.Item name="url" label="URL" required={false}>
+        <Form.Item name="url" label="URL" required={true}>
           <Input name="url" allowClear={true} />
           <span />
         </Form.Item>
-        <Form.Item name="detail" label="Detail" required={false}>
+        <Form.Item name="detail" label="Detail" required={true}>
           <Input name="detail" allowClear={true} />
           <span />
         </Form.Item>
