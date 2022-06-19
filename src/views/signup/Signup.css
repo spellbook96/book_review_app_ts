@@ -1,6 +1,7 @@
 .formContainer{
   position: fixed;
   background-color: rgba(0, 0, 0, 0.7);
+  /* background-color: rgba(255, 255, 255, 0.7); */
   width: 500px;
   height: 500px;
   top:50%;

@@ -163,56 +163,47 @@ export const Login: React.FC = () => {
             // }}
           >
             {() => (
-
               <Form
-              name="basic"
-              style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
-              // labelCol={{ xs: 12 }}
-              // wrapperCol={{ xs: 20 }}
-              {...layout}>
-              <div style={{ flex: 1 }} />
-              <div style={{ background: "white", flex: 1, padding: 40 }}>
-                <FormItem
-                  name="email"
-                  label="Email"
-                  required={true}
->
-                  <Input name="email" placeholder="Email" />
-                </FormItem>
-                <FormItem
-                  name="password"
-                  label="Password"
-                  required={true}
->
-                  <Input.Password name="password" placeholder="Password" />
-                </FormItem>
-                <FormItem
-                  name="remember"
-                  valuePropName="checked"
-                  labelCol={{ xs: 4 }}
-                  wrapperCol={{ offset: 8, span: 16 }}>
-                  <Checkbox name="remember">remember</Checkbox>
-                </FormItem>
+                name="normal_login"
+                style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
+                // labelCol={{ xs: 12 }}
+                // wrapperCol={{ xs: 20 }}
+                {...layout}>
+                <div style={{ flex: 1 }} />
+                <div style={{ background: "white", flex: 1, padding: 40 }}>
+                  <FormItem name="email" label="Email" required={true}>
+                    <Input name="email" placeholder="Email" />
+                  </FormItem>
+                  <FormItem name="password" label="Password" required={true}>
+                    <Input.Password name="password" placeholder="Password" />
+                  </FormItem>
+                  <FormItem
+                    name="remember"
+                    valuePropName="checked"
+                    labelCol={{ xs: 4 }}
+                    wrapperCol={{ offset: 8, span: 16 }}>
+                    <Checkbox name="remember">remember</Checkbox>
+                  </FormItem>
 
-                {/* <Row style={{ marginTop: 60 }}>
+                  {/* <Row style={{ marginTop: 60 }}>
                   <Col offset={8}> */}
-                {/* <Button.Group> */}
-                <Form.Item name="tailButton" {...tailLayout}>
-                  <ResetButton>Reset</ResetButton>
-                  <SubmitButton>Login</SubmitButton>
-                  <Button type="link" htmlType="button" href="/signup">
-                    Sign Up
-                  </Button>
-                </Form.Item>
-                {/* </Button.Group> */}
-                {/* </Col>
+                  {/* <Button.Group> */}
+                  <Form.Item name="tailButton" {...tailLayout}>
+                    <ResetButton>Reset</ResetButton>
+                    <SubmitButton>Login</SubmitButton>
+                    <Button type="link" htmlType="button" href="/signup">
+                      Sign Up
+                    </Button>
+                  </Form.Item>
+                  {/* </Button.Group> */}
+                  {/* </Col>
                 </Row> */}
-              </div>
-              <pre style={{ flex: 1 }}>
-                {/* <FormikDebug /> */}
-                <span></span>
-              </pre>
-            </Form>
+                </div>
+                <pre style={{ flex: 1 }}>
+                  {/* <FormikDebug /> */}
+                  <span></span>
+                </pre>
+              </Form>
             )}
           </Formik>
         </div>

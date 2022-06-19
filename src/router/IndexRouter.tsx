@@ -4,6 +4,7 @@ import Login from "../views/login/Login";
 import Books from "../views/sandbox/books/Books";
 import BooksSandBox from "../views/sandbox/BooksSandBox";
 import MyReviews from "../views/sandbox/my-reviews/MyReviews";
+import NewReview from "../views/sandbox/newReview/NewReview";
 import Profile from "../views/sandbox/profile/Profile";
 import ReviewDetail from "../views/sandbox/review-detail/ReviewDetail";
 import Signup from "../views/signup/Signup";
@@ -21,6 +22,7 @@ export default function IndexRouter() {
           <Route path="/detail/:id" element={<AuthComponent><ReviewDetail /></AuthComponent>} />
           <Route path="/detail" element={<Navigate to={'/'} />} />          
           <Route path="/profile" element={<AuthComponent><Profile /></AuthComponent>} />
+          <Route path="new" element={<AuthComponent><NewReview /></AuthComponent>} />
         </Route>
         <Route path="*" element={<div>404 NotFound</div>} />
       </Routes>

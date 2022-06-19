@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import {
   SubmitButton,
   Input,
@@ -12,7 +12,7 @@ import { message, Button } from "antd";
 import "./Signup.css";
 import axios from "axios";
 import store from "../../redux/store";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 // interface IErr {
 //   [key: string]: string;
 // }
@@ -41,31 +41,8 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 export const Signup: React.FC = () => {
-  let navigate = useNavigate();
-  const doSignup = (values: any) => {
-    return axios({
-      method: "post",
-      url: "https://api-for-missions-and-railways.herokuapp.com/users",
-      data: {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-      },
-    })
-      .catch((err) => {
-        message.error("ERROR");
-      })
-      .then((res: any) => {
-        console.log(res);
-        console.log(res.data.token);
-        message.success("Success");
-        store.dispatch({ type: "SET_LOGIN", isLogin: true });
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userName", values.name);
-        localStorage.setItem("email", values.email);
-        localStorage.setItem("password", values.password);
-      });
-  };
+ const navigate = useNavigate();
+  
   return (
     <div
       style={{
@@ -86,61 +63,27 @@ export const Signup: React.FC = () => {
               password: "",
               passwordConfirm: "",
             }}
-            onSubmit={(values, actions) => {
-              doSignup(values).then(() => {
-                // message.success(JSON.stringify(values, null, 3));
-
-                // console.log(values);
-                actions.setSubmitting(false);
-                navigate("/login");
-              });
+            onSubmit={(values, actions) => handleSubmit(values, actions,navigate)}
               // actions.resetForm()
-            }}
-            validate={(values) => {
-              const errors: any = {};
-              if (!values.name) {
-                errors.name = "Required";
-              }
-              if (!values.email) {
-                errors.email = "Required";
-              } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-              ) {
-                errors.email = "Invalid email address";
-              }
-              if (!values.passwordConfirm) {
-                errors.passwordConfirm = "Required";
-              } else if (values.password !== values.passwordConfirm) {
-                errors.passwordConfirm = "passwords must match";
-              }
-              console.log(errors);
-              return errors;
-            }}
-            // isValidating={true}
-            // validate={values => {
-            //   if (!values.lastName) {
-            //     return { lastName: "required" }
-            //   }
-            //   return {}
-            // }}
+
+            validate={(values) => validator(values)}
           >
             <Form
-              name="basic"
-              style={{ display: "grid", gridTemplateColumns: "1fr 46fr 1fr" }}
+              style={{ display: "grid", gridTemplateColumns: "1fr 45fr 1fr" }}
               // labelCol={{ xs: 12 }}
               // wrapperCol={{ xs: 20 }}
               {...layout}>
               <div style={{ flex: 1 }} />
-              {/* <FormikDebug /> */}
+              {/* <FormikDebug/> */}
               <div style={{ background: "white", flex: 1, padding: 40 }}>
                 <FormItem name="name" label="Name" required={true}>
-                  <Input name="name" placeholder="Name" />
+                  <Input name="name" placeholder="Name" /><span/>
                 </FormItem>
                 <FormItem name="email" label="Email" required={true}>
-                  <Input name="email" placeholder="Email" />
+                  <Input name="email" placeholder="Email" /><span/>
                 </FormItem>
                 <FormItem name="password" label="Password" required={true}>
-                  <Input.Password name="password" placeholder="Password" />
+                  <Input.Password name="password" placeholder="Password" /><span/>
                 </FormItem>
                 <FormItem
                   name="passwordConfirm"
@@ -166,7 +109,7 @@ export const Signup: React.FC = () => {
                   </Row> */}
               </div>
               <pre style={{ flex: 1 }}>
-                <span></span>
+            
               </pre>
             </Form>
           </Formik>
@@ -175,5 +118,64 @@ export const Signup: React.FC = () => {
     </div>
   );
 };
-
 export default Signup;
+
+function validator(values: {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}): any {
+  const errors: any = {};
+  if (!values.name) {
+    errors.name = "Required";
+  }
+  if (!values.email) {
+    errors.email = "Required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = "Invalid email address";
+  }
+  if (!values.passwordConfirm) {
+    errors.passwordConfirm = "Required";
+  } else if (values.password !== values.passwordConfirm) {
+    errors.passwordConfirm = "passwords must match";
+  }
+  // console.log(errors);
+  return errors;
+}
+
+
+
+function handleSubmit(values: { name: string; email: string; password: string; passwordConfirm: string; }, actions: FormikHelpers<{ name: string; email: string; password: string; passwordConfirm: string; }>,navigate: NavigateFunction): any {
+  {
+    doSignup(values).then(() => {
+      actions.setSubmitting(false);
+      navigate("/login");
+    })
+}
+}
+
+const doSignup = (values: any) => {
+  return axios({
+    method: "post",
+    url: "https://api-for-missions-and-railways.herokuapp.com/users",
+    data: {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    },
+  })
+    .catch((err) => {
+      message.error("ERROR");
+    })
+    .then((res: any) => {
+      console.log(res);
+      console.log(res.data.token);
+      message.success("Success");
+      store.dispatch({ type: "SET_LOGIN", isLogin: true });
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userName", values.name);
+      localStorage.setItem("email", values.email);
+      localStorage.setItem("password", values.password);
+    });
+};
