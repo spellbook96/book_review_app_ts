@@ -2,10 +2,12 @@ import {combineReducers, createStore} from 'redux'
 import { LoginReducer } from './reducers/LoginReducer'
 import { LoadingReducer } from './reducers/LoadingReducer'
 import { configureStore } from '@reduxjs/toolkit'
-
+import { CollapsedReducer } from './reducers/CollapsedReducer'
+import { PaginationReducer } from './reducers/PaginationReducer'
 const reducer = combineReducers({
   LoginReducer,
-  // LoadingReducer,
+  CollapsedReducer,
+  PaginationReducer,
 })
 
 // const store = configureStore({reducer:{

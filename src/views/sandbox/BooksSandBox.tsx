@@ -1,18 +1,25 @@
 import { Layout } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, useParams, Outlet } from "react-router-dom";
 import SideMenu from "../../components/sandbox/SideMenu";
 import TopHeader from "../../components/sandbox/TopHeader";
+import store from "../../redux/store";
 import "./BooksSandBox.css";
 
 const { Content } = Layout;
 export default function NewsSandBox() {
+  const [collapsed, setCollapsed] = useState(false);
+  store.subscribe (() => {
+    setCollapsed(store.getState().CollapsedReducer.isCollapsed);
+  }
+  );
+  
   return (
     console.log("render BooksSandBox"),
     // <div>NewsSandBox</div>
     <Layout>
       <SideMenu></SideMenu>
-      <Layout className="site-layout">
+      <Layout className="site-layout" style={collapsed?{marginLeft:80}:{marginLeft:200}}>
         <TopHeader></TopHeader>
         <Content
           className="site-layout-background"

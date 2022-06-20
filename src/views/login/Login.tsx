@@ -72,7 +72,7 @@ const tailLayout = {
 export const Login: React.FC = () => {
   let navigate = useNavigate();
   console.log("checking login");
-  if (store.getState().LoginReducer.isLogin || localStorage.getItem("token")) {
+  if (localStorage.getItem("token")) {
     navigate("/");
   }
 
@@ -97,6 +97,12 @@ export const Login: React.FC = () => {
           case 500:
             message.error("Error occurred at server.");
             break;
+          case 503:
+            message.error(
+              "Service is unavailable now. Please try again later",
+              5
+            );
+            break;
           default:
             message.error("Cannot connect database server.");
             break;
@@ -107,7 +113,7 @@ export const Login: React.FC = () => {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           setUserName(values.email, values.password).then(() => {
-            message.success("Login successful, redirecting...",1);
+            message.success("Login successful, redirecting...", 1);
             navigate("/");
           });
         }

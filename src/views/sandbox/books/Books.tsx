@@ -3,11 +3,12 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Card, Col, Layout, Menu, message, Row } from "antd";
+import { Button, Card, Col, Layout, Menu, message, Row } from "antd";
 import React, { useEffect } from "react";
 import "./css/Books.css";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { NavigateFunction, useNavigate, useParams, useSearchParams, } from "react-router-dom";
+import store from "../../../redux/store";
 const { Header, Content, Footer, Sider } = Layout;
 
 interface IReview {
@@ -18,32 +19,48 @@ interface IReview {
   url: string;
   details: string;
 }
-
+let navigate: NavigateFunction | ((arg0: string) => void);
 export default function Books() {
   const [allReviewsList, setAllReviewsList] = React.useState<IReview[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [currPage, setCurrPage] = React.useState(0);
+  const [searchParams,setSearchParams] = useSearchParams();
+  // store.subscribe(() => {
+  //   setCurrPage(store.getState().PaginationReducer.currPage);
+  // });
+  navigate = useNavigate();
   useEffect(() => {
+    // console.log("change page");
+    const newPage = searchParams.has("offset")? parseInt(searchParams.get("offset")!):0
+    setCurrPage (newPage);
     axios({
-      url: "https://api-for-missions-and-railways.herokuapp.com/public/books",
-      headers: {},
-    }).then((res) => {
-      // console.log(res.data);
-      setAllReviewsList(res.data);
-      setIsLoading(false);
-      message.success("Loaded: All Reviews");
-      return "OK";
+      url: "https://api-for-missions-and-railways.herokuapp.com/books?offset="+newPage,
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      },
     })
-    .catch((err) => {
-      message.error("Cannot connect to server",10);
-      return "ERROR";
-    }
-    );
-  }, []);
+      .then((res) => {
+        // console.log(res.data);
+        if(res.data.length === 0){
+          message.error("No more reviews");
+          navigate("/books?offset="+(newPage-9));
+          return "ERROR";
+        }
+        setAllReviewsList(res.data);
+        setIsLoading(false);
+        message.success("Loaded page: "+(newPage+1)+"~"+(newPage+9),0.5);
+        return "OK";
+      })
+      .catch((err) => {
+        message.error("Cannot connect to server", 10);
+        return "ERROR";
+      });
+  },[searchParams]);
 
-  const detailURL = (id: number) => {
-    let str: string = "/detail/" + id;
-    return <a href={str}></a>;
-  };
+  // const detailURL = (id: number) => {
+  //   let str: string = "/detail/" + id;
+  //   return <a href={str}></a>;
+  // };
   const renderReviews = (data: IReview[]) => {
     return data.map((item: IReview, index: number) => {
       return (
@@ -57,16 +74,21 @@ export default function Books() {
         // isLoading
         ///
         index !== 9 ? (
-        <Col span={8} key={index+data.length}>
-          <Card
-            title={"『" + item.title + "』"}
-            extra={<a href={"/detail/" + item.id}>More</a>}
-            style={{ width: 300, height: 120, margin: 16 }} key={index+data.length*2}>
-            <p className="review-text" key={item.id}>
-              {item.review}
-            </p>
-          </Card>
-        </Col>
+          <Col span={8} key={index + data.length}>
+            <Card
+              title={"『" + item.title + "』"}
+              extra={<a href={"/detail/" + item.id}>More</a>}
+              hoverable={true}
+              onClick={() => {
+                navigate("/detail/" + item.id);
+              }}
+              style={{ width: 300, height: 120, margin: 16 }}
+              key={index + data.length * 2}>
+              <p className="review-text" key={item.id}>
+                {item.review}
+              </p>
+            </Card>
+          </Col>
         ) : undefined
       );
     });
@@ -88,9 +110,16 @@ export default function Books() {
     <div>
       {/* Content-books */}
       <Row gutter={16} key={1}>
-        {isLoading ? makeLoadinglist(9) :  renderReviews(allReviewsList) }
+        {isLoading ? makeLoadinglist(9) : renderReviews(allReviewsList)}
         {/* <Row gutter={16}>{renderReviews(allReviewsList)}</Row> */}
       </Row>
+      <div style={{ textAlign: "center" }}>Show page {(currPage+1)}-{(currPage+9)}</div>
+      <div style={{margin:"auto",width:"35%"}}>
+        <Button style={{ margin: 20 ,float:"left"}} onClick={()=>{if(currPage !== 0){setSearchParams({offset:(currPage-9)+""});setIsLoading(true)} else{message.error("Already at the top")}}}>Prev</Button>
+        <Button style={{ margin: 20,float:"right"}} onClick={()=>{setSearchParams({offset:(currPage-9)+""});setIsLoading(true);navigate("/books?offset="+(currPage+9))}}>Next</Button>
+      </div>
+
+      <div></div>
     </div>
   );
 }

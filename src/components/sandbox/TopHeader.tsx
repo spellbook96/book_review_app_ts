@@ -51,12 +51,12 @@ export default function TopHeader() {
       {collapsed ? (
         <MenuUnfoldOutlined
           className="trigger"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => {setCollapsed(!collapsed);store.dispatch({type:'change'});}}
         />
       ) : (
         <MenuFoldOutlined
           className="trigger"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={() => {setCollapsed(!collapsed);store.dispatch({type:'change'});}}
         />
       )}
       <div style={{ float: "right" }}>
