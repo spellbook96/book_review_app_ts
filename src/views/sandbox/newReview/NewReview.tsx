@@ -47,9 +47,9 @@ function handleSubmit(
   console.log(res);
   if (res === "OK") {
     navigate("/");
-  }else{
+  } else {
     actions.setSubmitting(false);
-    navigate("/new")
+    navigate("/new");
   }
 }
 
@@ -63,20 +63,20 @@ function postReview(values: {
     method: "post",
     url: "https://api-for-missions-and-railways.herokuapp.com/books",
     data: {
-      "title": values.title,
-      "url": values.url,
-      "detail": values.detail,
-      "review": values.review,
+      title: values.title,
+      url: values.url,
+      detail: values.detail,
+      review: values.review,
     },
     headers: {
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
     },
   })
     .catch((err: { response: { status: any } }) => {
       switch (err.response.status) {
         case 403:
-          message.error("You are not authorized use",10);
+          message.error("You are not authorized use", 10);
           break;
         case 400:
           message.error("Validation error");
@@ -84,8 +84,14 @@ function postReview(values: {
         case 500:
           message.error("Error occurred at server.");
           break;
+        case 503:
+          message.error(
+            "Service is unavailable now. Please try again later",
+            5
+          );
+          break;
         default:
-          message.error("Cannot connect to server",10);
+          message.error("Cannot connect to server", 10);
       }
       return "NO";
     })

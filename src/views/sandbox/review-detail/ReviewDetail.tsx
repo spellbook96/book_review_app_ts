@@ -1,7 +1,7 @@
 import { Card, message } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import {DeleteOutlined } from "@ant-design/icons";
 interface IReview {
   id: string;
@@ -55,6 +55,9 @@ function useGetDetail(id: string) {
           case 500:
             message.error("Error occured at server");
             break;
+          case 503:
+            message.error("Service is unavailable now. Please try again later",5);
+            break;
           default:
             message.error("Cannot connect to server");
             break;
@@ -74,15 +77,15 @@ function useGetDetail(id: string) {
   }, []);
   return reviewData;
 }
-
+let navigate: NavigateFunction | ((arg0: string) => void);
 export default function ReviewDetail() {
   const data = useParams();
   const reviewData = useGetDetail(data.id as string);
-
+  navigate = useNavigate();
   // console.log(data.id);
   return (
     <div>
-      <Card title={"『" + reviewData.title + "』"} extra={operationBar()}>
+      <Card title={"『" + reviewData.title + "』"} extra={operationBar(reviewData)}>
         <Card type="inner" title="Book ID">
           {reviewData.id}
         </Card>
@@ -103,15 +106,57 @@ export default function ReviewDetail() {
   );
 }
 
-const operationBar = () => {
+const operationBar = (reviewData: IReview) => {
   return (
     <div>
-      <DeleteOutlined onClick={deleteClickHandle}/>
+      <DeleteOutlined onClick={deleteClickHandle(reviewData)}/>
     </div>
   );
 }
 
-const deleteClickHandle=() =>{
-    message.success("Deleted");
-    return 1;
+const deleteClickHandle=(reviewData: IReview) =>{
+  return () => {
+    deleteReview(reviewData.id);
+    message.info("processing...");
+}
+}
+
+function deleteReview(id:string) {
+  axios({
+    method: "delete",
+    url: "https://api-for-missions-and-railways.herokuapp.com/books/" + id,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  })
+    .catch((err) => {
+      switch (err.response.status) {
+        case 400:
+          message.error("Validation error");
+          break;
+        case 403:
+          message.error("You are not authorized use");
+          break;
+        case 404:
+          message.error("This book is not reviewd yet");
+          break;
+        case 500:
+          message.error("Error occured at server");
+          break;
+        case 503:
+          message.error("Service is unavailable now. Please try again later",5);
+          break;
+        default:
+          message.error("Cannot connect to server");
+          break;
+      }})
+      .then((res: any) => {
+        console.log(res);
+        if (res.status === 200) {
+          message.success("Delete successfully");
+          navigate("/");
+        }
+      }
+      );
 }

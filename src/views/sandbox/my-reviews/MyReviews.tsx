@@ -47,7 +47,7 @@ function renderMyReviews(data: IReview[]) {
       <Col span={8} key={index + data.length}>
         <Card
           title={"『" + item.title + "』"}
-          extra={<a href={"/detail/" + item.id}>More</a>}
+          extra={<a style={{float:"left"}} href={"/detail/" + item.id}>More</a>}
           style={{ width: 300, height: 120, margin: 16 }}
           key={index + data.length * 2}>
           <p className="review-text" key={item.id}>
