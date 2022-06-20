@@ -107,7 +107,7 @@ export const Login: React.FC = () => {
         if (res.status === 200) {
           localStorage.setItem("token", res.data.token);
           setUserName(values.email, values.password).then(() => {
-            message.success("Login successful, redirecting...");
+            message.success("Login successful, redirecting...",1);
             navigate("/");
           });
         }

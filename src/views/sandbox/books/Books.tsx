@@ -34,7 +34,7 @@ export default function Books() {
       return "OK";
     })
     .catch((err) => {
-      message.error("Cannot connect to server");
+      message.error("Cannot connect to server",10);
       return "ERROR";
     }
     );
@@ -56,7 +56,7 @@ export default function Books() {
         // </div>
         // isLoading
         ///
-        index % 10 !== 0 ? (
+        index !== 9 ? (
         <Col span={8} key={index+data.length}>
           <Card
             title={"『" + item.title + "』"}

@@ -14,7 +14,7 @@ interface IReview {
 
 export default function MyReviews() {
   const [allReviewsList, setAllReviewsList] = React.useState<IReview[]>([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(true);
   useEffect(() => {
     axios({
       url: "https://api-for-missions-and-railways.herokuapp.com/books",
@@ -26,13 +26,13 @@ export default function MyReviews() {
       .then((res) => {
         // console.log(res.data);
         setAllReviewsList(res.data);
-        setIsLoading(false);
+        // setIsLoading(false);
         message.success("Loaded: MyReviews");
 
         return "OK";
       })
       .catch((err) => {
-        message.error("Cannot connect to server");
+        message.error("Cannot connect to server",10);
         return "ERROR";
       });
   }, []);

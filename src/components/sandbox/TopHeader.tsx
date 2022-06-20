@@ -11,6 +11,7 @@ export default function TopHeader() {
   // console.log("init TopHeader");
   const [collapsed, setCollapsed] = useState(false);
   const [isLogin, setIsLogin] = useState(localStorage.getItem("token") ? true : false);
+  const [userName, setUserName] = useState(localStorage.getItem("token") ? localStorage.getItem("userName") : "");
   const menu = (
     <Menu
       items={[
@@ -36,12 +37,13 @@ export default function TopHeader() {
   //   }
   // }, [localStorage.getItem("token")]);
   store.subscribe(() => {
-    // console.log("通知中");
+    console.log("通知中");
     if (store.getState().LoginReducer.isLogin) {
       setIsLogin(true);
     } else{
       setIsLogin(false);
     }
+    setUserName(store.getState().LoginReducer.userName);
   });
   return (
     // console.log("render TopHeader"),
@@ -60,7 +62,7 @@ export default function TopHeader() {
       <div style={{ float: "right" }}>
         {isLogin || localStorage.getItem('token') ? (
           <div>
-            <span>{localStorage.getItem("userName")} </span>
+            <span>{userName} </span>
             <Dropdown overlay={menu}>
               <Avatar size={48} icon={<UserOutlined />} />
             </Dropdown>

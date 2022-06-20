@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { Avatar, message } from "antd";
 import axios from "axios";
 import { Formik, FormikHelpers, FormikProps } from "formik";
 import {
@@ -10,6 +10,7 @@ import {
 } from "formik-antd";
 import React from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+
 let navigate: NavigateFunction = () => {};
 export default function NewReview() {
   navigate = useNavigate();
@@ -75,7 +76,7 @@ function postReview(values: {
     .catch((err: { response: { status: any } }) => {
       switch (err.response.status) {
         case 403:
-          message.error("You are not authorized use");
+          message.error("You are not authorized use",10);
           break;
         case 400:
           message.error("Validation error");
@@ -84,13 +85,14 @@ function postReview(values: {
           message.error("Error occurred at server.");
           break;
         default:
-          message.error("Cannot connect to server");
+          message.error("Cannot connect to server",10);
       }
       return "NO";
     })
     .then((res: any) => {
       if (res.status === 200) {
         message.success("Review posted successfully");
+        navigate("/");
         return "OK";
       }
     });
@@ -151,7 +153,7 @@ function myRender(
         <ResetButton>Reset</ResetButton>
         <SubmitButton onClick={() => props.handleSubmit()}>Submit</SubmitButton>
       </Form.Item>
-      <FormikDebug />
+      {/* <FormikDebug /> */}
     </div>
   );
 }

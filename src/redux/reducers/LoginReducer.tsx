@@ -14,6 +14,10 @@ export const LoginReducer = (preState ={isLogin : false, userName :"", email:"",
       newState.email = action.email as string;
       newState.password = action.password as string;
       return newState;
+    case "UPDATE_NAME":
+      const newState2 = { ...preState };
+      newState2.userName = action.userName as string;
+      return newState2;
     default:
       return preState;
   }
