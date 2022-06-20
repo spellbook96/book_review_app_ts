@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# 実装済み
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Login
 
-## Available Scripts
+![image-20220620213257032](https://img.yuliannas.com/i/202206202133200.png)
 
-In the project directory, you can run:
+- 使用したモジュール
 
-### `npm start`
+formik, antd-formik, axios, redeux
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Feature
+  - Input box check
+  - APIサーバに送信
+  - ERRORメッセージ出力
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## SignUP
 
-### `npm test`
+![image-20220620213340291](https://img.yuliannas.com/i/202206202133391.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## HOME
 
-### `npm run build`
+![image-20220620213454596](https://img.yuliannas.com/i/202206202134705.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Profile
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![image-20220620213424902](https://img.yuliannas.com/i/202206202134035.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## New Review
 
-### `npm run eject`
+![image-20220620213503555](https://img.yuliannas.com/i/202206202135645.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Review Detail
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![image-20220620213538780](https://img.yuliannas.com/i/202206202135924.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Review Editor
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image-20220620213553030](https://img.yuliannas.com/i/202206202135128.png)
