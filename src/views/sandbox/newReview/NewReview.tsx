@@ -41,10 +41,8 @@ function handleSubmit(
     review: string;
   }>
 ): any {
-  console.log(values);
-  console.log("123");
+  message.info("Submitting...");
   let res = postReview(values) as string;
-  console.log(res);
   if (res === "OK") {
     navigate("/");
   } else {
